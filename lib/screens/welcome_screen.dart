@@ -12,6 +12,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation animation;
+  late Animation colorAnimation;
   int counter = 0;
 
   void initState() {
@@ -22,6 +23,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       upperBound: 1.0,
     );
     animation = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    colorAnimation = ColorTween(
+      begin: Colors.blueGrey,
+      end: Colors.white,
+    ).animate(controller);
 
     controller.forward();
     controller.addStatusListener((status) {
@@ -44,10 +49,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     });
   }
 
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorAnimation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(

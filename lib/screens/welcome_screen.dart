@@ -12,6 +12,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation animation;
+  int counter = 0;
 
   void initState() {
     super.initState();
@@ -20,9 +21,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       duration: Duration(seconds: 25),
       upperBound: 1.0,
     );
-    animation = CurvedAnimation(parent: controller, curve: Curves.bounceIn);
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
 
     controller.forward();
+    controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        print('complete ${controller.status}');
+        controller.reverse(from: 1.0);
+        counter++;
+        if (counter > 2) {
+          controller.stop();
+        }
+      } else if (status == AnimationStatus.dismissed) {
+        print('dismissed ${controller.status}');
+        controller.forward();
+      }
+    });
     controller.addListener(() {
       print('Value: ${animation.value}');
       print('Elapsed: ${controller.lastElapsedDuration}');

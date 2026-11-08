@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,9 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController controller;
+  late AnimationController colorController;
   late Animation animation;
   late Animation colorAnimation;
   int counter = 0;
@@ -21,26 +23,32 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       vsync: this,
       duration: Duration(seconds: 25),
       upperBound: 1.0,
+      lowerBound: 0.2,
+    );
+    colorController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 25),
     );
     animation = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
     colorAnimation = ColorTween(
       begin: Colors.blueGrey,
       end: Colors.white,
-    ).animate(controller);
+    ).animate(colorController);
 
     controller.forward();
+    colorController.forward();
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         print('complete ${controller.status}');
         controller.reverse(from: 1.0);
-        counter++;
-        if (counter > 2) {
-          controller.stop();
-        }
+        controller.stop();
       } else if (status == AnimationStatus.dismissed) {
         print('dismissed ${controller.status}');
         controller.forward();
       }
+    });
+    colorController.addListener(() {
+      setState(() {});
     });
     controller.addListener(() {
       print('Value: ${animation.value}');
@@ -51,6 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   void dispose() {
     controller.dispose();
+    colorController.dispose();
     super.dispose();
   }
 
@@ -73,14 +82,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     height: animation.value * 100,
                   ),
                 ),
-
-                Text(
-                  'Flash Chat',
-                  style: TextStyle(
-                    color: Colors.blueAccent,
-                    fontSize: 36.0,
-                    fontWeight: FontWeight.w900,
-                  ),
+                AnimatedTextKit(
+                  animatedTexts: ['Flash Chat']
+                      .map(
+                        (ch) => TypewriterAnimatedText(
+                          ch,
+                          textStyle: TextStyle(
+                            fontSize: 45.0,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
+                          ),
+                          speed: Duration(milliseconds: 200),
+                        ),
+                      )
+                      .toList(),
                 ),
               ],
             ),

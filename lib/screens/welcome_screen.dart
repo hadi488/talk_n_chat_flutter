@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
+import 'package:flash_chat/widgets/rectangular_button.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -15,7 +16,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late AnimationController colorController;
   late Animation animation;
   late Animation colorAnimation;
-  int counter = 0;
 
   void initState() {
     super.initState();
@@ -83,54 +83,35 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ),
                 AnimatedTextKit(
-                  animatedTexts: ['Flash Chat']
-                      .map(
-                        (ch) => TypewriterAnimatedText(
-                          ch,
-                          textStyle: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.black,
-                          ),
-                          speed: Duration(milliseconds: 200),
-                        ),
-                      )
-                      .toList(),
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Flash Chat',
+                      textStyle: TextStyle(
+                        fontSize: 45.0,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black,
+                      ),
+                      speed: Duration(milliseconds: 200),
+                    ),
+                  ],
                 ),
               ],
             ),
             SizedBox(height: 48.0),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text('Log In'),
-                ),
-              ),
+            RectangularButton(
+              text: "Log In",
+              onPressed: () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
+              color: Colors.lightBlueAccent,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, RegistrationScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text('Register'),
-                ),
-              ),
+            SizedBox(height: 8.0),
+            RectangularButton(
+              text: "Register",
+              onPressed: () {
+                Navigator.pushNamed(context, RegistrationScreen.id);
+              },
+              color: Colors.blueAccent,
             ),
           ],
         ),

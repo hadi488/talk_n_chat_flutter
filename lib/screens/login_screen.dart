@@ -1,7 +1,9 @@
 import 'package:flash_chat/constants.dart';
+import 'package:flash_chat/widgets/password_text_field.dart';
 import 'package:flash_chat/widgets/rectangular_button.dart';
-import 'package:flash_chat/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/email_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = '/login_screen';
@@ -10,6 +12,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String _email = '';
+  String _password = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,23 +26,25 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             Hero(tag: 'logo', child: kLogoContainer),
             SizedBox(height: 48.0),
-            TextfieldWidget(
+            EmailTextField(
               hintText: 'Enter your email',
               onChanged: (value) {
-                //Do something with the user input.
+                _email = value;
               },
             ),
             SizedBox(height: 8.0),
-            TextfieldWidget(
+            PasswordTextField(
               hintText: 'Enter your password.',
               onChanged: (value) {
-                //Do something with the user input.
+                _password = value;
               },
             ),
             SizedBox(height: 24.0),
             RectangularButton(
               text: 'Log In',
-              onPressed: () {},
+              onPressed: () {
+                print('Email: $_email, Password: $_password');
+              },
               color: Colors.lightBlueAccent,
             ),
           ],

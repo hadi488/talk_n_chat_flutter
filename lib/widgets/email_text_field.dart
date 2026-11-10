@@ -1,10 +1,10 @@
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 
-class TextfieldWidget extends StatelessWidget {
+class EmailTextField extends StatelessWidget {
   final String hintText;
   final dynamic onChanged;
-  const TextfieldWidget({
+  const EmailTextField({
     super.key,
     required this.hintText,
     required this.onChanged,
@@ -13,8 +13,10 @@ class TextfieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: TextInputType.emailAddress,
+      textAlign: TextAlign.center,
       onChanged: (value) {
-        //Do something with the user input.
+        onChanged(value);
       },
       style: TextStyle(color: Colors.black),
       decoration: kInputDecoration.copyWith(hintText: hintText),

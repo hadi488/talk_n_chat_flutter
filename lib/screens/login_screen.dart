@@ -55,6 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                   if (userCredential.user != null) {
                     print('User logged in: ${userCredential.user?.email}');
+                    _email = '';
+                    _password = '';
                     Navigator.pushNamed(context, ChatScreen.id);
                   }
                 } catch (e) {

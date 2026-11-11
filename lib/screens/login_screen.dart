@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/constants.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flash_chat/widgets/password_text_field.dart';
 import 'package:flash_chat/widgets/rectangular_button.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   String _email = '';
   String _password = '';
   @override
@@ -37,13 +41,25 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'Enter your password.',
               onChanged: (value) {
                 _password = value;
+                print('value: $value');
               },
             ),
             SizedBox(height: 24.0),
             RectangularButton(
               text: 'Log In',
-              onPressed: () {
-                print('Email: $_email, Password: $_password');
+              onPressed: () async {
+                try {
+                  final userCredential = await _auth.signInWithEmailAndPassword(
+                    email: _email,
+                    password: _password,
+                  );
+                  if (userCredential.user != null) {
+                    print('User logged in: ${userCredential.user?.email}');
+                    Navigator.pushNamed(context, ChatScreen.id);
+                  }
+                } catch (e) {
+                  print('Error logging in: $e');
+                }
               },
               color: Colors.lightBlueAccent,
             ),

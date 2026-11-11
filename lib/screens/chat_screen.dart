@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,32 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _auth = FirebaseAuth.instance;
+  User? loggedInUser;
+
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print('Current user: ${user.email}');
+        print('Current user: ${loggedInUser?.email}');
+      }
+      updateState();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void updateState() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
@@ -36,9 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
-                      onChanged: (value) {
-                        //Do something with the user input.
-                      },
+                      onChanged: (value) {},
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
@@ -50,6 +75,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               ),
+            ),
+            Text(
+              'Logged in as: ${loggedInUser?.email ?? 'Unknown'}${loggedInUser?.uid ?? ''}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ],
         ),

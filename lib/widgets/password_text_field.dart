@@ -18,6 +18,7 @@ class PasswordTextField extends StatelessWidget {
       obscureText: true,
       onChanged: (value) {
         onChanged(value);
+        print('value: $value');
       },
       style: TextStyle(color: Colors.black),
       decoration: kInputDecoration.copyWith(hintText: hintText),

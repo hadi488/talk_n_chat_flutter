@@ -38,7 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Hero(tag: 'logo', child: kLogoContainer),
+              Flexible(
+                child: Hero(tag: 'logo', child: kLogoContainer),
+              ),
               SizedBox(height: 48.0),
               EmailTextField(
                 hintText: 'Enter your email',

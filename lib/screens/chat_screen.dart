@@ -81,12 +81,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   TextButton(
                     onPressed: () async {
                       _messageController.clear();
-                      final result = await _firestore
-                          .collection("messages")
-                          .add({
-                            "text": _messageText,
-                            "sender": loggedInUser?.email ?? 'Unknown',
-                          });
+                      await _firestore.collection("messages").add({
+                        "text": _messageText.trim(),
+                        "sender": loggedInUser?.email ?? 'Anonymous',
+                        "createdAt": FieldValue.serverTimestamp(),
+                      });
                     },
                     child: Text('Send', style: kSendButtonTextStyle),
                   ),
@@ -111,7 +110,10 @@ class StreamBuilderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _firestore.collection('messages').snapshots(),
+      stream: _firestore
+          .collection('messages')
+          .orderBy('createdAt', descending: false)
+          .snapshots(),
       builder: (context, snapshot) {
         List<MessageBubble> messagesBubbles = [];
         if (!snapshot.hasData) {
